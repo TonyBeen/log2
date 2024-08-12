@@ -7,7 +7,8 @@
 
 #include <thread>
 
-#include <log2/log.h>
+#include "log.h"
+
 #include <callstack/callstack.h>
 
 #define LOG_TAG "Example"

@@ -20,6 +20,9 @@ add_subdirectory(example)
 
 add_library(log2 SHARED ${SOURCE_FILES})
 
+target_include_directories(log2 PRIVATE ${ROOT_PATH}
+        INTERFACE $<BUILD_INTERFACE:${ROOT_PATH}> $<INSTALL_INTERFACE:include>)
+
 target_compile_definitions(log2 PRIVATE NDEBUG)
 
 install(TARGETS log2

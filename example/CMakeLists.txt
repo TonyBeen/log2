@@ -13,7 +13,7 @@ foreach(SOURCE_FILE ${SOURCE_FILE_LIST})
 
     target_include_directories(${FILE_NAME} PUBLIC 
                                ${ROOT_PATH})
-    
+
     target_compile_definitions(${FILE_NAME} PRIVATE NDEBUG)
 
     if(UNIX AND NOT APPLE)
