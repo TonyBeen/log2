@@ -7,7 +7,7 @@
 
 #include <thread>
 
-#include "log.h"
+#include "log2/log.h"
 
 #include <callstack/callstack.h>
 
@@ -39,5 +39,7 @@ int main(int argc, char **argv)
 
     frame1();
 
+    LOG_ASSERT(false, "%s", "22222");
+    LOG_ASSERT2(false);
     return 0;
 }

@@ -238,7 +238,7 @@ void LogWriteAssert(log_level_t level, const char *expr, const char *log_tag, co
     Log2Sink(level, g_logBuffer);
 
     utils::CallStack stack;
-    stack.update();
+    stack.update(3);
     const auto &stackFrames = stack.frames();
     for (const auto &it : stackFrames) {
         Log2Sink(level, it.c_str());
