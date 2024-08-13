@@ -25,5 +25,5 @@ foreach(SOURCE_FILE ${SOURCE_FILE_LIST})
         target_compile_options(${FILE_NAME} PRIVATE /utf-8)
     endif()
 
-    target_link_libraries(${FILE_NAME} PRIVATE log2)
+    target_link_libraries(${FILE_NAME} PRIVATE eular::log2)
 endforeach()

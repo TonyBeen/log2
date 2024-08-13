@@ -20,7 +20,7 @@ set(CALLSTACK_HEADER_FILES
 add_subdirectory(example)
 
 add_library(log2 SHARED ${SOURCE_FILES})
-add_library(log2 ALIAS log2)
+add_library(eular::log2 ALIAS log2)
 
 target_include_directories(log2 PRIVATE ${ROOT_PATH}
         INTERFACE $<BUILD_INTERFACE:${ROOT_PATH}> $<INSTALL_INTERFACE:include>)
