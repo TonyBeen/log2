@@ -37,10 +37,11 @@ struct LogPrivate {
 
     LogPrivate() {
         // 1900-1-1 00:00:00.000 3500 3501 [W] log_tag: log message
-        formatPattern = "%Y-%m-%d %H:%M:%S.%e %P %t [%L]: %v";
+        formatPattern = "%Y-%m-%d %H:%M:%S.%e %P %t [%L] %v";
         logger_list.resize(output_t::OUTPUT_SIZE, nullptr);
         logger_list[output_t::OUTPUT_STD] = spdlog::stdout_color_mt("console");
         logger_list[output_t::OUTPUT_STD]->set_level(spdlog::level::level_enum::debug);
+        logger_list[output_t::OUTPUT_STD]->set_pattern(formatPattern);
     }
 };
 

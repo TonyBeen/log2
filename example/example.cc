@@ -18,7 +18,10 @@ void frame2()
     utils::CallStack stack;
     stack.update(2, 1);
 
-    LOGI("\n%s", stack.to_string().c_str());
+    const auto &frames = stack.frames();
+    for (const auto &it : frames) {
+        LOGI("%s", it.c_str());
+    }
 }
 
 void frame1()
