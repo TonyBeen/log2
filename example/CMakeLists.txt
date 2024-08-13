@@ -16,12 +16,12 @@ foreach(SOURCE_FILE ${SOURCE_FILE_LIST})
 
     target_compile_definitions(${FILE_NAME} PRIVATE NDEBUG _CRT_SECURE_NO_WARNINGS)
 
-    if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    if (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
         target_link_options(${FILE_NAME} PRIVATE -rdynamic)
-    elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-        target_compile_options(${FILE_NAME} PRIVATE /utf-8 /W4)
-    else()
-        message(ERROR "Compiling with an unknown compiler")
+    endif()
+
+    if (MSVC)
+        target_compile_options(${FILE_NAME} PRIVATE /utf-8)
     endif()
 
     target_link_libraries(${FILE_NAME} PRIVATE eular::log2)

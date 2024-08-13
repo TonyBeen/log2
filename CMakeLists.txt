@@ -33,14 +33,12 @@ target_include_directories(log2 PRIVATE ${ROOT_PATH}
 
 target_compile_definitions(log2 PRIVATE LOG_EXPORTS NDEBUG _CRT_SECURE_NO_WARNINGS)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pthread")
+if (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pthread")
+endif()
 
-if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-
-elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
-    target_compile_options(log2 PRIVATE /utf-8 /W4)
-else()
-    message(ERROR "Compiling with an unknown compiler")
+if (MSVC)
+    target_compile_options(log2 PRIVATE /utf-8)
 endif()
 
 install(TARGETS log2
