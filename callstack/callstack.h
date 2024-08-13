@@ -8,13 +8,15 @@
 #ifndef __ALIAS_CALLSTACK_H__
 #define __ALIAS_CALLSTACK_H__
 
+#include "def.h"
+
 #include <stdio.h>
 #include <string>
 #include <vector>
 
 namespace utils {
 
-class CallStack {
+class LOG_EXPORT CallStack {
 public:
     CallStack();
     CallStack(uint16_t ignoreBegin);
