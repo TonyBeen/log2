@@ -60,7 +60,7 @@ std::string GetFileName()
 
 LogPrivate *GetLogPrivate()
 {
-    std::call_once(g_logPrivateInitFlag, [] {
+    std::call_once(g_logPrivateInitFlag, [] () {
         if (g_logPrivate == nullptr) {
             g_logPrivate.reset(new (std::nothrow) LogPrivate());
         }

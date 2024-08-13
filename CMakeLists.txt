@@ -2,6 +2,12 @@ cmake_minimum_required(VERSION 3.0)
 
 project(log2 VERSION 1.0.0)
 
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED True)
+
+set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
 set(ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
 file(GLOB LOCAL_SOURCE_FILES "*.cpp")
@@ -27,8 +33,14 @@ target_include_directories(log2 PRIVATE ${ROOT_PATH}
 
 target_compile_definitions(log2 PRIVATE LOG_EXPORTS NDEBUG _CRT_SECURE_NO_WARNINGS)
 
-if(MSVC)
-    target_compile_options(log2 PRIVATE /utf-8)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -pthread")
+
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+
+elseif (CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    target_compile_options(log2 PRIVATE /utf-8 /W4)
+else()
+    message(ERROR "Compiling with an unknown compiler")
 endif()
 
 install(TARGETS log2
