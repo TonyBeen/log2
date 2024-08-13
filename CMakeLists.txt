@@ -4,8 +4,9 @@ project(log2 VERSION 1.0.0)
 
 set(ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
-# 获取目录下所有源文件
-file(GLOB_RECURSE SOURCE_FILES *.cpp)
+file(GLOB LOCAL_SOURCE_FILES "*.cpp")
+file(GLOB_RECURSE CALLSTACK_SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/callstack/*.cpp")
+set(SOURCE_FILES ${LOCAL_SOURCE_FILES} ${CALLSTACK_SOURCE_FILES})
 
 set(LOG_HEADER_FILES
     def.h
@@ -19,11 +20,16 @@ set(CALLSTACK_HEADER_FILES
 add_subdirectory(example)
 
 add_library(log2 SHARED ${SOURCE_FILES})
+add_library(log2 ALIAS log2)
 
 target_include_directories(log2 PRIVATE ${ROOT_PATH}
         INTERFACE $<BUILD_INTERFACE:${ROOT_PATH}> $<INSTALL_INTERFACE:include>)
 
-target_compile_definitions(log2 PRIVATE NDEBUG)
+target_compile_definitions(log2 PRIVATE LOG_EXPORTS NDEBUG _CRT_SECURE_NO_WARNINGS)
+
+if(MSVC)
+    target_compile_options(log2 PRIVATE /utf-8)
+endif()
 
 install(TARGETS log2
         ARCHIVE DESTINATION lib

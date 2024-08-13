@@ -14,11 +14,16 @@ foreach(SOURCE_FILE ${SOURCE_FILE_LIST})
     target_include_directories(${FILE_NAME} PUBLIC 
                                ${ROOT_PATH})
 
-    target_compile_definitions(${FILE_NAME} PRIVATE NDEBUG)
+    target_compile_definitions(${FILE_NAME} PRIVATE NDEBUG _CRT_SECURE_NO_WARNINGS)
 
     if(UNIX AND NOT APPLE)
         target_link_options(${FILE_NAME} PRIVATE -rdynamic)
+        target_link_libraries(${FILE_NAME} PRIVATE pthread)
     endif()
 
-    target_link_libraries(${FILE_NAME} PRIVATE log2 pthread)
+    if(MSVC)
+        target_compile_options(${FILE_NAME} PRIVATE /utf-8)
+    endif()
+
+    target_link_libraries(${FILE_NAME} PRIVATE log2)
 endforeach()

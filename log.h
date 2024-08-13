@@ -63,47 +63,47 @@ EXTERN_C_BEGIN
  *
  * @param level 
  */
-void LogSetLevel(log_level_t level = LEVEL_DEBUG);
+LOG_EXPORT void LogSetLevel(log_level_t level = LEVEL_DEBUG);
 
 /**
  * @brief 设置日志输出目录(UTF-8), 默认可执行程序目录 (Thread not safety)
  *
  * @param logFilePath 日志路径
  */
-void LogSetLogPath(const char *logFilePath);
+LOG_EXPORT void LogSetLogPath(const char *logFilePath);
 
 /**
  * @brief 添加一个输出类型 (Thread not safety)
  *
  * @param outputType 
  */
-void LogOutputAppend(output_t outputType);
+LOG_EXPORT void LogOutputAppend(output_t outputType);
 
 /**
  * @brief 删除一个输出类型 (Thread not safety)
  *
  * @param outputType 
  */
-void LogOutputDel(output_t outputType);
+LOG_EXPORT void LogOutputDel(output_t outputType);
 
 /**
  * @brief 设置格式化格式 (Thread not safety)
  *
  * @param formatPattern 
  */
-void LogSetFormatPattern(const char *formatPattern);
+LOG_EXPORT void LogSetFormatPattern(const char *formatPattern);
 
 /**
  * @brief 格式化字符串(printf) (Thread safety)
  *
  */
-void LogWrite(log_level_t level, const char *log_tag, const char *fmt, ...) ATTR_FORMAT(3, 4);
+LOG_EXPORT void LogWrite(log_level_t level, const char *log_tag, const char *fmt, ...) ATTR_FORMAT(3, 4);
 
 /**
  * @brief 格式化字符串(printf) (Thread safety)
  *
  */
-void LogWriteAssert(log_level_t level, const char *expr, const char *log_tag, const char *fmt, ...) ATTR_FORMAT(4, 5);
+LOG_EXPORT void LogWriteAssert(log_level_t level, const char *expr, const char *log_tag, const char *fmt, ...) ATTR_FORMAT(4, 5);
 
 EXTERN_C_END
 
