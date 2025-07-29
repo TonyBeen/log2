@@ -10,17 +10,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 set(ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
-file(GLOB LOCAL_SOURCE_FILES "*.cpp")
-file(GLOB_RECURSE CALLSTACK_SOURCE_FILES "${CMAKE_CURRENT_SOURCE_DIR}/callstack/*.cpp")
-set(SOURCE_FILES ${LOCAL_SOURCE_FILES} ${CALLSTACK_SOURCE_FILES})
+file(GLOB LOCAL_SOURCE_FILES "src/*.cpp")
+set(SOURCE_FILES ${LOCAL_SOURCE_FILES})
 
 set(LOG_HEADER_FILES
-    def.h
-    log.h
+    include/log2/log.h
+    include/log2/log_def.h
 )
 
 set(CALLSTACK_HEADER_FILES
-    callstack/callstack.h
+    include/callstack/callstack.h
 )
 
 add_subdirectory(example)
@@ -28,7 +27,10 @@ add_subdirectory(example)
 add_library(log2 SHARED ${SOURCE_FILES})
 add_library(eular::log2 ALIAS log2)
 
-target_include_directories(log2 PRIVATE ${ROOT_PATH}
+target_include_directories(log2 PUBLIC
+        ${ROOT_PATH}/include
+        ${ROOT_PATH}/include/callstack
+        ${ROOT_PATH}/include/log2
         INTERFACE $<BUILD_INTERFACE:${ROOT_PATH}> $<INSTALL_INTERFACE:include>)
 
 target_compile_definitions(log2 PRIVATE LOG_EXPORTS NDEBUG _CRT_SECURE_NO_WARNINGS)
@@ -47,4 +49,15 @@ install(TARGETS log2
         RUNTIME DESTINATION bin)
 
 install(FILES ${LOG_HEADER_FILES} DESTINATION include/log2)
-install(FILES ${CALLSTACK_HEADER_FILES} DESTINATION include/callstack)
+install(FILES ${CALLSTACK_HEADER_FILES} DESTINATION include/log2)
+
+# uninstall target
+if(NOT TARGET uninstall)
+    configure_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/uninstall.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake"
+        IMMEDIATE @ONLY)
+
+    add_custom_target(uninstall
+        COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/uninstall.cmake)
+endif()

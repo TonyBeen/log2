@@ -8,7 +8,7 @@
 #ifndef __EULAR_LOG2_H__
 #define __EULAR_LOG2_H__
 
-#include "def.h"
+#include <log2/log_def.h>
 #include <stdio.h>
 
 typedef enum {

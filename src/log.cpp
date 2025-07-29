@@ -82,19 +82,19 @@ void Log2Sink(log_level_t level, const char *msg)
 
         switch (level) {
         case log_level_t::LEVEL_DEBUG:
-            it->debug("{}", msg);
+            it->debug(msg);
             break;
         case log_level_t::LEVEL_INFO:
-            it->info("{}", msg);
+            it->info(msg);
             break;
         case log_level_t::LEVEL_WARN:
-            it->warn("{}", msg);
+            it->warn(msg);
             break;
         case log_level_t::LEVEL_ERROR:
-            it->error("{}", msg);
+            it->error(msg);
             break;
         case log_level_t::LEVEL_FATAL:
-            it->critical("{}", msg);
+            it->critical(msg);
             break;
 
         default:
