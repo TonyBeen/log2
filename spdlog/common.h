@@ -273,7 +273,7 @@ enum level_enum : int {
 #if !defined(SPDLOG_SHORT_LEVEL_NAMES)
 
     #define SPDLOG_SHORT_LEVEL_NAMES \
-        { "T", "D", "I", "W", "E", "C", "O" }
+        { "T", "D", "I", "W", "E", "F", "O" }
 #endif
 
 SPDLOG_API const string_view_t &to_string_view(spdlog::level::level_enum l) SPDLOG_NOEXCEPT;
