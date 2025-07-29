@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5)
 
 project(log2 VERSION 1.0.0)
 
@@ -27,11 +27,16 @@ add_subdirectory(example)
 add_library(log2 SHARED ${SOURCE_FILES})
 add_library(eular::log2 ALIAS log2)
 
-target_include_directories(log2 PUBLIC
+target_include_directories(log2
+    PUBLIC
         ${ROOT_PATH}/include
         ${ROOT_PATH}/include/callstack
         ${ROOT_PATH}/include/log2
-        INTERFACE $<BUILD_INTERFACE:${ROOT_PATH}> $<INSTALL_INTERFACE:include>)
+    PRIVATE
+        ${ROOT_PATH}
+    INTERFACE
+        $<BUILD_INTERFACE:${ROOT_PATH}>
+)
 
 target_compile_definitions(log2 PRIVATE LOG_EXPORTS NDEBUG _CRT_SECURE_NO_WARNINGS)
 
