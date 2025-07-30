@@ -9,10 +9,14 @@
 #define __EULAR_LOG2_DEF_H__
 
 #if defined(_MSC_VER)
-    #if defined(MAKE_SHARED) || defined(LOG_EXPORTS)
-        #define LOG_EXPORT  __declspec(dllexport)
+    #ifndef LOG_STATIC
+        #if defined(MAKE_SHARED) || defined(LOG_EXPORTS)
+            #define LOG_EXPORT  __declspec(dllexport)
+        #else
+            #define LOG_EXPORT  __declspec(dllimport)
+        #endif
     #else
-        #define LOG_EXPORT  __declspec(dllimport)
+        #define LOG_EXPORT
     #endif
 
     #define ATTR_FORMAT(x, y)
