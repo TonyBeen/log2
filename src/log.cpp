@@ -21,7 +21,7 @@
 #include "spdlog/sinks/rotating_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
 
-#define FILE_SIZE       5 * 1024 * 1024
+#define FILE_SIZE       16 * 1024 * 1024
 #define FILE_NUMBER     3
 
 #define LOG_TAG_SIZE    (64)
