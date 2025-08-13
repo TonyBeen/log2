@@ -22,7 +22,11 @@
 #include <stdlib.h>
 
 #if defined(OS_LINUX) || defined(OS_MAC)
+#if defined(USE_UNWIND)
+#include "unwind_stacktrace.hpp"
+#else
 #include "cxxabi_stacktrace.hpp"
+#endif
 #elif defined(OS_WIN32) || defined(OS_WIN64)
 #include "dbghelp_stacktrace.hpp"
 #endif
@@ -45,7 +49,11 @@ void CallStack::update(uint16_t ignoreBegin, uint16_t ignoreEnd)
     m_skip = ignoreBegin;
     m_skipEnd = ignoreEnd;
 #if defined(OS_LINUX) || defined(OS_MAC)
+#if defined(USE_UNWIND)
+    m_stackFrame = detail::unwind_stacktrace(m_skip, m_skipEnd);
+#else
     m_stackFrame = detail::stacktrace(m_skip, m_skipEnd);
+#endif
 #elif defined(OS_WIN32) || defined(OS_WIN64)
     detail::DbgStackWalker stack;
     stack.ShowCallstack();

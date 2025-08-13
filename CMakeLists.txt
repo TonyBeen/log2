@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.15)
 
 project(log2 VERSION 1.0.0)
 
@@ -11,6 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 option(LOG2_STATIC_LIB "Build static library" ON)
 option(LOG2_DYNAMIC_LIB "Build dynamic library" ON)
 option(ENABLE_DEBUG "Enable debug symbol" OFF)
+option(USE_UNWIND "Use unwind to get stack trace" ON)
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "RelWithDebInfo") # Release MinSizeRel RelWithDebInfo Debug
@@ -38,6 +39,13 @@ add_subdirectory(example)
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
     add_compile_options(-Wall -Wextra -pthread)
+endif()
+
+if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND USE_UNWIND MATCHES "ON")
+    add_compile_definitions(USE_UNWIND)
+    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rd)
+    # link_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rd/lib)
+    link_libraries(${CMAKE_CURRENT_SOURCE_DIR}/3rd/lib/libunwind.a ${CMAKE_CURRENT_SOURCE_DIR}/3rd/lib/libunwind-x86_64.a)
 endif()
 
 # static library
