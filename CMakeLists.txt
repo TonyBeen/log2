@@ -78,8 +78,11 @@ if (LOG2_STATIC_LIB MATCHES "ON")
         target_compile_definitions(log2_static PRIVATE _CRT_SECURE_NO_WARNINGS)
     endif()
 
-    target_link_libraries(log2_static Threads::Threads)
-    target_link_libraries(log2_static ${3RD_LIBRARY})
+    target_link_libraries(log2_static
+        PUBLIC
+            Threads::Threads
+            $<BUILD_INTERFACE:${3RD_LIBRARY}>
+    )
 endif()
 
 # dynamic library
@@ -104,8 +107,12 @@ if (LOG2_DYNAMIC_LIB MATCHES "ON")
         target_compile_options(log2 PRIVATE /utf-8)
         target_compile_definitions(log2 PRIVATE _CRT_SECURE_NO_WARNINGS)
     endif()
-    target_link_libraries(log2 Threads::Threads)
-    target_link_libraries(log2 ${3RD_LIBRARY})
+
+    target_link_libraries(log2
+        PUBLIC
+            Threads::Threads
+            $<BUILD_INTERFACE:${3RD_LIBRARY}>
+    )
 endif()
 
 install(TARGETS log2 log2_static
