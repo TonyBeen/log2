@@ -26,6 +26,8 @@ set(ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 file(GLOB LOCAL_SOURCE_FILES "src/*.cpp")
 set(SOURCE_FILES ${LOCAL_SOURCE_FILES})
 
+find_package(Threads REQUIRED)
+
 set(LOG_HEADER_FILES
     include/log2/log.h
     include/log2/log_def.h
@@ -41,11 +43,15 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
     add_compile_options(-Wall -Wextra -pthread)
 endif()
 
+set(3RD_INCLUDE_PATH "")
+set(3RD_LIBRARY "")
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND USE_UNWIND MATCHES "ON")
     add_compile_definitions(USE_UNWIND)
-    include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rd)
+    set(3RD_INCLUDE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/3rd/)
+    set(3RD_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/3rd/lib/libunwind.a ${CMAKE_CURRENT_SOURCE_DIR}/3rd/lib/libunwind-x86_64.a)
+    # include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rd)
     # link_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rd/lib)
-    link_libraries(${CMAKE_CURRENT_SOURCE_DIR}/3rd/lib/libunwind.a ${CMAKE_CURRENT_SOURCE_DIR}/3rd/lib/libunwind-x86_64.a)
+    # link_libraries(${CMAKE_CURRENT_SOURCE_DIR}/3rd/lib/libunwind.a ${CMAKE_CURRENT_SOURCE_DIR}/3rd/lib/libunwind-x86_64.a)
 endif()
 
 # static library
@@ -58,6 +64,7 @@ if (LOG2_STATIC_LIB MATCHES "ON")
             $<BUILD_INTERFACE:${ROOT_PATH}/include>
             $<BUILD_INTERFACE:${ROOT_PATH}/include/callstack>
             $<BUILD_INTERFACE:${ROOT_PATH}/include/log2>
+            $<BUILD_INTERFACE:${3RD_INCLUDE_PATH}>
         PRIVATE
             $<BUILD_INTERFACE:${ROOT_PATH}/include>
         INTERFACE
@@ -66,12 +73,13 @@ if (LOG2_STATIC_LIB MATCHES "ON")
 
     target_compile_definitions(log2_static PRIVATE LOG_STATIC)
 
-    if (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
-        target_link_libraries(log2_static pthread)
-    elseif(CMAKE_CXX_COMPILER_ID STREQUAL MSVC)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL MSVC)
         target_compile_options(log2_static PRIVATE /utf-8)
         target_compile_definitions(log2_static PRIVATE _CRT_SECURE_NO_WARNINGS)
     endif()
+
+    target_link_libraries(log2_static Threads::Threads)
+    target_link_libraries(log2_static ${3RD_LIBRARY})
 endif()
 
 # dynamic library
@@ -83,6 +91,7 @@ if (LOG2_DYNAMIC_LIB MATCHES "ON")
             $<BUILD_INTERFACE:${ROOT_PATH}/include>
             $<BUILD_INTERFACE:${ROOT_PATH}/include/callstack>
             $<BUILD_INTERFACE:${ROOT_PATH}/include/log2>
+            $<BUILD_INTERFACE:${3RD_INCLUDE_PATH}>
         PRIVATE
             $<BUILD_INTERFACE:${ROOT_PATH}>
         INTERFACE
@@ -91,12 +100,12 @@ if (LOG2_DYNAMIC_LIB MATCHES "ON")
 
     target_compile_definitions(log2 PRIVATE LOG_EXPORTS)
 
-    if (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
-        target_link_libraries(log2 pthread)
-    elseif(CMAKE_CXX_COMPILER_ID STREQUAL MSVC)
+    if(CMAKE_CXX_COMPILER_ID STREQUAL MSVC)
         target_compile_options(log2 PRIVATE /utf-8)
         target_compile_definitions(log2 PRIVATE _CRT_SECURE_NO_WARNINGS)
     endif()
+    target_link_libraries(log2 Threads::Threads)
+    target_link_libraries(log2 ${3RD_LIBRARY})
 endif()
 
 install(TARGETS log2 log2_static
