@@ -55,11 +55,11 @@ if (LOG2_STATIC_LIB MATCHES "ON")
 
     target_include_directories(log2_static
         PUBLIC
-            ${ROOT_PATH}/include
-            ${ROOT_PATH}/include/callstack
-            ${ROOT_PATH}/include/log2
+            $<BUILD_INTERFACE:${ROOT_PATH}/include>
+            $<BUILD_INTERFACE:${ROOT_PATH}/include/callstack>
+            $<BUILD_INTERFACE:${ROOT_PATH}/include/log2>
         PRIVATE
-            ${ROOT_PATH}
+            $<BUILD_INTERFACE:${ROOT_PATH}/include>
         INTERFACE
             $<BUILD_INTERFACE:${ROOT_PATH}>
     )
@@ -80,11 +80,11 @@ if (LOG2_DYNAMIC_LIB MATCHES "ON")
     add_library(eular::log2 ALIAS log2)
     target_include_directories(log2
         PUBLIC
-            ${ROOT_PATH}/include
-            ${ROOT_PATH}/include/callstack
-            ${ROOT_PATH}/include/log2
+            $<BUILD_INTERFACE:${ROOT_PATH}/include>
+            $<BUILD_INTERFACE:${ROOT_PATH}/include/callstack>
+            $<BUILD_INTERFACE:${ROOT_PATH}/include/log2>
         PRIVATE
-            ${ROOT_PATH}
+            $<BUILD_INTERFACE:${ROOT_PATH}>
         INTERFACE
             $<BUILD_INTERFACE:${ROOT_PATH}>
     )
@@ -100,12 +100,39 @@ if (LOG2_DYNAMIC_LIB MATCHES "ON")
 endif()
 
 install(TARGETS log2 log2_static
+        EXPORT log2Targets
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin)
 
 install(FILES ${LOG_HEADER_FILES} DESTINATION include/log2)
 install(FILES ${CALLSTACK_HEADER_FILES} DESTINATION include/log2)
+
+# 导出 targets 文件
+install(EXPORT log2Targets
+    FILE log2Targets.cmake
+    NAMESPACE eular::
+    DESTINATION lib/cmake/log2
+)
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/log2ConfigVersion.cmake"
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY AnyNewerVersion
+)
+
+configure_package_config_file(
+    "${CMAKE_CURRENT_SOURCE_DIR}/cmake/log2Config.cmake.in"
+    "${CMAKE_CURRENT_BINARY_DIR}/log2Config.cmake"
+    INSTALL_DESTINATION lib/cmake/log2
+)
+
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/log2Config.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/log2ConfigVersion.cmake"
+    DESTINATION lib/cmake/log2
+)
 
 # uninstall target
 if(NOT TARGET uninstall)
