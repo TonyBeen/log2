@@ -99,7 +99,7 @@ if (LOG2_DYNAMIC_LIB MATCHES "ON")
     endif()
 endif()
 
-install(TARGETS log2
+install(TARGETS log2 log2_static
         ARCHIVE DESTINATION lib
         LIBRARY DESTINATION lib
         RUNTIME DESTINATION bin)
