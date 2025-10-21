@@ -17,6 +17,8 @@
 
 #include "callstack/callstack.h"
 
+#include "printf.h"
+
 #include "spdlog/spdlog.h"
 #include "spdlog/sinks/rotating_file_sink.h"
 #include "spdlog/sinks/stdout_color_sinks.h"
@@ -210,7 +212,7 @@ void LogWrite(log_level_t level, const char *log_tag, const char *fmt, ...)
 
     va_list ap;
     va_start(ap, fmt);
-    vsnprintf(g_logBuffer + offset, MSG_BUF_SIZE - offset - 1, fmt, ap);
+    vsnprintf_(g_logBuffer + offset, MSG_BUF_SIZE - offset - 1, fmt, ap);
     va_end(ap);
 
     Log2Sink(level, g_logBuffer);
@@ -231,7 +233,7 @@ void LogWriteAssert(log_level_t level, const char *expr, const char *log_tag, co
     if (fmt != nullptr) {
         va_list ap;
         va_start(ap, fmt);
-        vsnprintf(g_logBuffer + offset, MSG_BUF_SIZE - offset - 1, fmt, ap);
+        vsnprintf_(g_logBuffer + offset, MSG_BUF_SIZE - offset - 1, fmt, ap);
         va_end(ap);
     }
 

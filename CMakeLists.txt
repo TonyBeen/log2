@@ -24,7 +24,7 @@ endif()
 set(ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
 file(GLOB LOCAL_SOURCE_FILES "src/*.cpp")
-set(SOURCE_FILES ${LOCAL_SOURCE_FILES})
+set(SOURCE_FILES ${LOCAL_SOURCE_FILES} src/printf.c)
 
 find_package(Threads REQUIRED)
 
@@ -67,6 +67,7 @@ if (LOG2_STATIC_LIB MATCHES "ON")
             $<BUILD_INTERFACE:${3RD_INCLUDE_PATH}>
         PRIVATE
             $<BUILD_INTERFACE:${ROOT_PATH}/include>
+            $<BUILD_INTERFACE:${ROOT_PATH}/include/src>
         INTERFACE
             $<BUILD_INTERFACE:${ROOT_PATH}>
     )
@@ -97,6 +98,7 @@ if (LOG2_DYNAMIC_LIB MATCHES "ON")
             $<BUILD_INTERFACE:${3RD_INCLUDE_PATH}>
         PRIVATE
             $<BUILD_INTERFACE:${ROOT_PATH}>
+            $<BUILD_INTERFACE:${ROOT_PATH}/include/src>
         INTERFACE
             $<BUILD_INTERFACE:${ROOT_PATH}>
     )
