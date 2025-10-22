@@ -55,7 +55,10 @@ set(3RD_LIBRARY "")
 if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND USE_UNWIND MATCHES "ON")
     add_compile_definitions(USE_UNWIND)
     set(3RD_INCLUDE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/3rd/)
-    set(3RD_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/3rd/lib/libunwind.a ${CMAKE_CURRENT_SOURCE_DIR}/3rd/lib/libunwind-x86_64.a)
+    set(3RD_LIBRARY
+        unwind
+        unwind-x86_64
+    )
     # include_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rd)
     # link_directories(${CMAKE_CURRENT_SOURCE_DIR}/3rd/lib)
     # link_libraries(${CMAKE_CURRENT_SOURCE_DIR}/3rd/lib/libunwind.a ${CMAKE_CURRENT_SOURCE_DIR}/3rd/lib/libunwind-x86_64.a)
