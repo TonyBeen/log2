@@ -1,8 +1,17 @@
 @PACKAGE_INIT@
 
+# Get the path of the current file.
+get_filename_component(LIBLOG2_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+
+# Set the include directories.
+set(LIBLOG2_INCLUDE_DIRS "@LIBLOG2_INSTALL_INCLUDE_DIR@")
+
 set(log2_VERSION @PROJECT_VERSION@)
 
 set(log2_STATIC_LIB     "@LOG2_STATIC_LIB@")
 set(log2_DYNAMIC_LIB    "@LOG2_DYNAMIC_LIB@")
 
 include("${CMAKE_CURRENT_LIST_DIR}/log2Targets.cmake")
+
+set(LIBLOG2_STATIC_LIBRARIES "@LIBLOG2_STATIC_LIBRARIES@")
+set(LIBLOG2_SHARED_LIBRARIES "@LIBLOG2_SHARED_LIBRARIES@")

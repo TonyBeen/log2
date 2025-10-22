@@ -21,6 +21,13 @@ if(ENABLE_DEBUG MATCHES "ON")
     set(CMAKE_BUILD_TYPE "Debug")
 endif()
 
+if(WIN32 AND NOT CYGWIN)
+  set(DEF_INSTALL_CMAKE_DIR cmake)
+else()
+  set(DEF_INSTALL_CMAKE_DIR lib/cmake/libevent)
+endif()
+set(LIBLOG2_INSTALL_CMAKE_DIR "${CMAKE_INSTALL_PREFIX}/${DEF_INSTALL_CMAKE_DIR}")
+
 set(ROOT_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
 file(GLOB LOCAL_SOURCE_FILES "src/*.cpp")
@@ -54,10 +61,14 @@ if (CMAKE_SYSTEM_NAME STREQUAL "Linux" AND USE_UNWIND MATCHES "ON")
     # link_libraries(${CMAKE_CURRENT_SOURCE_DIR}/3rd/lib/libunwind.a ${CMAKE_CURRENT_SOURCE_DIR}/3rd/lib/libunwind-x86_64.a)
 endif()
 
+set(LIBLOG2_STATIC_LIBRARIES "")
+set(LIBLOG2_SHARED_LIBRARIES "")
+
 # static library
 if (LOG2_STATIC_LIB MATCHES "ON")
     add_library(log2_static STATIC ${SOURCE_FILES})
     add_library(eular::log2_static ALIAS log2_static)
+    set(LIBLOG2_STATIC_LIBRARIES log2_static)
 
     target_include_directories(log2_static
         PUBLIC
@@ -90,6 +101,8 @@ endif()
 if (LOG2_DYNAMIC_LIB MATCHES "ON")
     add_library(log2 SHARED ${SOURCE_FILES})
     add_library(eular::log2 ALIAS log2)
+    set(LIBLOG2_SHARED_LIBRARIES log2)
+
     target_include_directories(log2
         PUBLIC
             $<BUILD_INTERFACE:${ROOT_PATH}/include>
@@ -132,6 +145,14 @@ install(EXPORT log2Targets
     NAMESPACE eular::
     DESTINATION lib/cmake/log2
 )
+
+file(RELATIVE_PATH
+     REL_INCLUDE_DIR
+     "${LIBLOG2_INSTALL_CMAKE_DIR}"
+     "${CMAKE_INSTALL_PREFIX}/include")
+
+# Note the LIBLOG2_CMAKE_DIR is defined in log2Config.cmake.in
+set(LIBLOG2_INSTALL_INCLUDE_DIR "\${LIBLOG2_CMAKE_DIR}/${REL_INCLUDE_DIR}")
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
