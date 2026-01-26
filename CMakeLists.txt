@@ -76,14 +76,11 @@ if (LOG2_STATIC_LIB MATCHES "ON")
     target_include_directories(log2_static
         PUBLIC
             $<BUILD_INTERFACE:${ROOT_PATH}/include>
+        PRIVATE
+            $<BUILD_INTERFACE:${ROOT_PATH}>
             $<BUILD_INTERFACE:${ROOT_PATH}/include/callstack>
             $<BUILD_INTERFACE:${ROOT_PATH}/include/log2>
             $<BUILD_INTERFACE:${3RD_INCLUDE_PATH}>
-        PRIVATE
-            $<BUILD_INTERFACE:${ROOT_PATH}/include>
-            $<BUILD_INTERFACE:${ROOT_PATH}/include/src>
-        INTERFACE
-            $<BUILD_INTERFACE:${ROOT_PATH}>
     )
 
     target_compile_definitions(log2_static PRIVATE LOG_STATIC)
@@ -109,14 +106,11 @@ if (LOG2_DYNAMIC_LIB MATCHES "ON")
     target_include_directories(log2
         PUBLIC
             $<BUILD_INTERFACE:${ROOT_PATH}/include>
+        PRIVATE
+            $<BUILD_INTERFACE:${ROOT_PATH}>
             $<BUILD_INTERFACE:${ROOT_PATH}/include/callstack>
             $<BUILD_INTERFACE:${ROOT_PATH}/include/log2>
             $<BUILD_INTERFACE:${3RD_INCLUDE_PATH}>
-        PRIVATE
-            $<BUILD_INTERFACE:${ROOT_PATH}>
-            $<BUILD_INTERFACE:${ROOT_PATH}/include/src>
-        INTERFACE
-            $<BUILD_INTERFACE:${ROOT_PATH}>
     )
 
     target_compile_definitions(log2 PRIVATE LOG_EXPORTS)
