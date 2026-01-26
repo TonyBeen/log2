@@ -76,7 +76,7 @@ if (LOG2_STATIC_LIB MATCHES "ON")
     add_library(eular::log2_static ALIAS log2_static)
     set(LIBLOG2_STATIC_LIBRARIES log2_static)
 
-    set_target_properties(TARGET log2_static PROPERTIES POSITION_INDEPENDENT_CODE ON)
+    set_target_properties(log2_static PROPERTIES POSITION_INDEPENDENT_CODE ON)
     target_include_directories(log2_static
         PUBLIC
             $<BUILD_INTERFACE:${ROOT_PATH}/include>
