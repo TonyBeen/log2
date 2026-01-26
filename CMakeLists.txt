@@ -12,6 +12,7 @@ option(LOG2_STATIC_LIB "Build static library" ON)
 option(LOG2_DYNAMIC_LIB "Build dynamic library" ON)
 option(ENABLE_DEBUG "Enable debug symbol" OFF)
 option(USE_UNWIND "Use unwind to get stack trace" ON)
+option(BUILD_EXAMPLE "Build example program" OFF)
 
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE "RelWithDebInfo") # Release MinSizeRel RelWithDebInfo Debug
@@ -44,7 +45,9 @@ set(CALLSTACK_HEADER_FILES
     include/callstack/callstack.h
 )
 
-add_subdirectory(example)
+if(BUILD_EXAMPLE MATCHES "ON")
+    add_subdirectory(example)
+endif()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL GNU)
     add_compile_options(-Wall -Wextra -pthread)
@@ -73,6 +76,7 @@ if (LOG2_STATIC_LIB MATCHES "ON")
     add_library(eular::log2_static ALIAS log2_static)
     set(LIBLOG2_STATIC_LIBRARIES log2_static)
 
+    set_target_properties(TARGET log2_static PROPERTIES POSITION_INDEPENDENT_CODE ON)
     target_include_directories(log2_static
         PUBLIC
             $<BUILD_INTERFACE:${ROOT_PATH}/include>
