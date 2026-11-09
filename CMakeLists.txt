@@ -95,7 +95,7 @@ if (LOG2_STATIC_LIB)
             $<BUILD_INTERFACE:${3RD_INCLUDE_PATH}>
     )
 
-    target_compile_definitions(log2_static PRIVATE ${CXX_MARCO_DEFINITIONS} LOG_STATIC)
+    target_compile_definitions(log2_static PRIVATE ${CXX_MARCO_DEFINITIONS} PUBLIC LOG_STATIC)
 
     if(CMAKE_CXX_COMPILER_ID STREQUAL MSVC)
         target_compile_options(log2_static PRIVATE /utf-8)
