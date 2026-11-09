@@ -10,6 +10,7 @@
 
 #include <log2/log_def.h>
 
+#include <stdint.h>
 #include <stdio.h>
 #include <string>
 #include <vector>
